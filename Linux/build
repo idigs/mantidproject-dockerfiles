@@ -12,9 +12,3 @@ DOCKER_BUILTKIT=1 docker build \
     --build-arg SEMVER_TAG=${semver_tag} \
   .
 
-exit
-
-DOCKER_BUILTKIT=1 docker build \
-    --build-arg SEMVER_TAG=${semver_tag} \
-    --tag ghcr.io/idigs/mantid-development-alma:${semver_tag} \
-  .
