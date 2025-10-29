@@ -6,8 +6,10 @@ read -r semver_tag <<< $(../utils/equate_tag_semver "library/almalinux:latest")
 test -n ${semver_tag} || exit 1
 
 DOCKER_BUILTKIT=1 docker build \
-    --build-arg SEMVER_TAG=${semver_tag} \
+    --target jenkins_node \
+    --tag ghcr.io/idigs/jenkins-node-alma:latest \
     --tag ghcr.io/idigs/jenkins-node-alma:${semver_tag} \
+    --build-arg SEMVER_TAG=${semver_tag} \
   .
 
 exit
