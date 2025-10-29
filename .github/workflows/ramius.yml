@@ -38,16 +38,27 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: build and push - mantid development image
+      - name: build and push - mantid development image (alma ${{ needs.job_setup.outputs.semver_tag }})
         uses: docker/build-push-action@v6
         with:
-          context:  Linux/development/docker
-          file:     Linux/development/docker/Alma9.Dockerfile
-          push: true
+          target: mantid_development
           tags: |
             ghcr.io/${{ github.repository_owner }}/mantid-development-alma:latest
             ghcr.io/${{ github.repository_owner }}/mantid-development-alma:${{ needs.job_setup.outputs.semver_tag }}
           build-args: |
             SEMVER_TAG=${{ needs.job_setup.outputs.semver_tag }}
+          context: Linux
+          push: true
 
+      - name: build and push - jenkins node (alma ${{ needs.job_setup.outputs.semver_tag }})
+        uses: docker/build-push-action@v6
+        with:
+          target: jenkins_node
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/jenkins-node-alma:latest
+            ghcr.io/${{ github.repository_owner }}/jenkins-node-alma:${{ needs.job_setup.outputs.semver_tag }}
+          build-args: |
+            SEMVER_TAG=${{ needs.job_setup.outputs.semver_tag }}
+          context: Linux
+          push: true
 
