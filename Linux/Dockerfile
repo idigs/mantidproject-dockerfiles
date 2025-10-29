@@ -116,7 +116,7 @@ COPY --chmod=755 <<-__EOF__ /entrypoint.sh
 	# runuser).
 	runuser -u \${TARGET_USERNAME} -- \${CMD}
 	
-__EOF__
+	__EOF__
 
 ENTRYPOINT ["/entrypoint.sh"]
 
