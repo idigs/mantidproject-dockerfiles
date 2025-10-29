@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 
-ARG SEMVER_TAG
+ARG SEMVER_TAG=9
 
 FROM almalinux:${SEMVER_TAG} AS os_pkgs
 
@@ -20,6 +20,8 @@ RUN dnf -y install \
   sudo \
   wget \
   which \
+  jq \
+  file \
   xorg-x11-server-Xvfb
 
 RUN dnf clean all
@@ -61,7 +63,6 @@ VOLUME ["/mantid_src", "/mantid_build", "/mantid_data"]
 WORKDIR /mantid_build
 
 # ----
-
 
 FROM fslayout AS mantid_development
 
