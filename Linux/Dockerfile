@@ -117,6 +117,12 @@ COPY --chmod=755 <<-"__EOF__" /entrypoint.sh
 	
 	__EOF__
 
+  #
+  # Using double quotes for <<-"__EOF__" heredoc interpolation means
+  # that escape sequences such as \$ aren't necessary
+  # The contents will be created as-is
+  #
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 
