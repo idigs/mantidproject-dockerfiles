@@ -166,11 +166,11 @@ CMD ["/usr/share/jenkins/agent.sh"]
 FROM mantid_development AS github_runner
 
 # Retrieve Github Runner
-ARG GITHUB_RUNNER_VERSION=2.329.0
-ARG GITHUB_RUNNER_DIGEST=sha256:194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d
+ARG GITHUB_SELFHOST_VERSION=2.329.0
+ARG GITHUB_SELFHOST_DIGEST=sha256:194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d
 ADD \
-    --checksum=${GITHUB_RUNNER_DIGEST} \
-  https://github.com/actions/runner/releases/download/v${GITHUB_RUNNER_VERSION}/actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz
+    --checksum=${GITHUB_SELFHOST_DIGEST} \
+  https://github.com/actions/runner/releases/download/v${GITHUB_SELFHOST_VERSION}/actions-runner-linux-x64-${GITHUB_SELFHOST_VERSION}.tar.gz
 
 
 # ----
