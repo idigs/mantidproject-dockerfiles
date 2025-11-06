@@ -2,7 +2,13 @@
 
 ARG SEMVER_TAG=9
 
-FROM almalinux:${SEMVER_TAG} AS os_pkgs
+# ----
+FROM condaforge/linux-anvil-x86_64:alma9 AS condaforge_anvil
+
+
+
+# ----
+FROM almalinux:${SEMVER_TAG} AS alma_generic
 
 # Add target user
 RUN useradd --uid 911 --user-group --shell /bin/bash --create-home abc
@@ -30,7 +36,7 @@ RUN dnf clean all
 #
 # DISABLED >>
 #
-FROM os_pkgs AS latex_direct
+FROM alma_generic AS latex_direct
 
 # Install latex direct from texlive
 RUN  mkdir -p /latex \
@@ -53,8 +59,7 @@ RUN tlmgr install anyfontsize
 #
 
 # ----
-
-FROM os_pkgs AS fslayout
+FROM alma_generic AS fslayout
 
 # Allow mounting source, build and data directories
 VOLUME ["/mantid_src", "/mantid_build", "/mantid_data"]
@@ -64,7 +69,6 @@ WORKDIR /mantid_build
 
 
 # ----
-
 FROM fslayout AS mantid_development
 
 COPY --chmod=755 <<-"__EOF__" /entrypoint.sh
@@ -128,7 +132,6 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 
 # ----
-
 FROM mantid_development AS jenkins_node
 
 # Install Java
@@ -162,7 +165,6 @@ CMD ["/usr/share/jenkins/agent.sh"]
 
 
 # ----
-
 FROM mantid_development AS github_runner
 
 # Retrieve Github Runner
@@ -174,7 +176,6 @@ ADD \
 
 
 # ----
-
 FROM jenkins_node AS jenkins_node_ornl_repoman
 
 COPY --chmod=644 <<-__EOF__ /home/abc/.condarc
@@ -186,8 +187,8 @@ COPY --chmod=644 <<-__EOF__ /home/abc/.condarc
 	
 __EOF__
 
-# ----
 
+# ----
 #FROM almalinux:latest
 #COPY --from=0 /etc/os-release /tmp/base-os-release
 
